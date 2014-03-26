@@ -45,3 +45,5 @@ end
 # gem 'debugger', group: [:development, :test]
 
 gem 'skyscanner', :require => 'skyscanner'
+gem 'pg'
+gem 'devise'
