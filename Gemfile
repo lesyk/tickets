@@ -47,3 +47,4 @@ end
 gem 'skyscanner', :require => 'skyscanner'
 gem 'pg'
 gem 'devise'
+gem 'devise-token_authenticatable'
