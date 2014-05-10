@@ -1,14 +1,28 @@
 <p id="notice"><%= notice %></p>
 
 <p>
-  <strong>Title:</strong>
-  <%= @booking.title %>
+  <strong>Price:</strong>
+  <%= @booking.price %>
 </p>
 
 <p>
-  <strong>Code:</strong>
-  <%= @booking.code %>
+  <strong>Fom:</strong>
+  <%= @booking.from %>
 </p>
 
-<%= link_to 'Edit', edit_booking_path(@booking) %> |
+<p>
+  <strong>To:</strong>
+  <%= @booking.to %>
+</p>
+<p>
+  <strong>Date:</strong>
+  <%= @booking.date %>
+</p>
+
+<p>
+  <strong>Date Back:</strong>
+  <%= @booking.date_back %>
+</p>
+
+<!--<%#= link_to 'Edit', edit_booking_path(@booking) %> |-->
 <%= link_to 'Back', bookings_path %>

@@ -1,10 +1,39 @@
 class SearchController < ApplicationController
+  before_action :authenticate_user!
+  TOKEN = "prtl6749387986743898559646983194"
+
   def index
-    # p Skyscanner::Connection.instance_variables
-    # Skyscanner::Connection.browse_quotes({ :country => "GB", :curency => "GBP",
-    #                                        :locale => "en-GB", :originPlace => "UK", 
-    #                                        :destinationPlace => "anywhere", :outboundPartialDate => "anytime", 
-    #                                        :inboundPartialDate => "anytime", :apikey => "prtl6749387986743898559646983194"
-    #                                     })
+    if params["from"] && params["to"] && params["date"] && params["date_back"]
+      @from = params["from"].empty? ? "LON" : params["from"]
+      @to = params["to"].empty? ? "anywhere" : params["to"]
+      @date = params["date"].empty? ? "anytime" : params["date"]
+      @date_back = params["date_back"].empty? ? "anytime" : params["date_back"]
+      Skyscanner::Connection.apikey = TOKEN
+      @results = Skyscanner::Connection.browse_quotes({
+                                             # :market => "UA",
+                                             :country => "GB",
+                                             :currency => "GBP",
+                                             :locale => "en-GB",
+                                             :originPlace => "#{@from}",
+                                             :destinationPlace => "#{@to}",
+                                             :outboundPartialDate => "#{@date}",
+                                             :inboundPartialDate => "#{@date_back}"
+                                          })
+      @results = @results["Quotes"]
+      @booking = Booking.new
+      
+      # puts @results
+      respond_to do |format|
+        format.html { render action: 'index' }
+        format.json { render json: @results }
+      end
+    end
   end
+
+private  
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def search_params
+    params.require(:search).permit(:from, :to, :date, :date_back)
+  end
+
 end

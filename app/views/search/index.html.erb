@@ -1,2 +1,39 @@
-<h1>Search#index</h1>
-<p>Find me in app/views/search/index.html.erb</p>
+<%=link_to "Bookings", bookings_path %>
+
+<h1>Search</h1>
+
+<form name="search" action="/search/index" method="post">
+  From: <input type="text" name="from" value="<%=@from%>" />
+  To: <input type="text" name="to" value="<%=@to%>" />
+  Date: <input type="text" name="date" value="<%=@date%>" />
+  Date back: <input type="text" name="date_back" value="<%=@date_back%>" />
+  <input type="submit" name="Search" />
+<form>
+
+<% if @results %>
+  <h1>Listing of searches</h1>
+  
+  <table>
+    <tbody>
+      <%@results.each do |f|%>
+        <tr>
+          <td>From: <%from = f["OutboundLeg"]["OriginId"] %><%=from%></td>
+          <td>To: <%to = f["OutboundLeg"]["DestinationId"] %><%=to%></td>
+          <td>Time: <%date = f["OutboundLeg"]["DepartureDate"] %><%=date%></td>
+          <td>Price: <%price = f["MinPrice"] %><%=price%></td>
+        </tr>
+        <tr>
+          <td>From: <%= f["InboundLeg"]["OriginId"] %></td>
+          <td>To: <%= f["InboundLeg"]["DestinationId"] %></td>
+          <td>Time: <%date_back = f["InboundLeg"]["DepartureDate"] %><%=date_back%></td>
+          <td><%= link_to "Create booking", bookings_path(@booking, :booking => {from: from, to: to, date:date, date_back:date_back,price:price}), method: :post %></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>
