@@ -20,13 +20,21 @@ class SearchController < ApplicationController
                                              :inboundPartialDate => "#{@date_back}"
                                           })
       @results = @results["Quotes"]
-      @booking = Booking.new
-      
+      @booking = Booking.new  
       # puts @results
       respond_to do |format|
         format.html { render action: 'index' }
         format.json { render json: @results }
       end
+    end
+  end
+  
+  def lookup_directions
+    SearchWorker.perform_async('message', 5)
+    
+    respond_to do |format|
+      format.html { redirect_to search_index_path }
+      format.json { render json: {:message => "We will send you email with results"}.to_json }
     end
   end
 
